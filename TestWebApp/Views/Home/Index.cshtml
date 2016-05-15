@@ -1,0 +1,86 @@
+﻿@model TestWebApp.Models.HomeViewModels
+
+@*     This if loop runs before CSV model has been uploaded. Once CSV has been uploaded, Model.Uploaded is changed to true so that the else loop runs    *@
+@if (Model.Uploaded == false)
+{
+    Model.Title = "Upload";
+
+    @*    Create form asking for file upload, with post method so that the HttpPost action method is run after the upload. Enctype attribute ensures that actual file is uploaded, not just file name    *@
+    <div class="jumbotron">
+        <h2>@Model.Title</h2>
+        <form method="post" enctype="multipart/form-data">
+            <p>Please upload the file to be parsed.</p>
+            <input type="file" accept=".csv" name="CSV" required/>
+            <br />
+            <input type="submit" value="Upload CSV" name="csv" formaction="/Home/Index/" />
+        </form>
+    </div>
+}
+
+@*     Once CSV has been uploaded, Model.Uploaded is changed to false. Thus this section of code runs when the index View is initialized    *@
+else
+{
+    Model.Title = "Results";
+    <div class="jumbotron">
+
+        <h2>@Model.Title</h2>
+
+        <h5>A field that appears blank contained invalid data.</h5>
+
+        @*     If there is no exception from parsing the data, then the table containg employee data is displayed on the page    *@
+        @if (Model.Exception == null)
+        {
+
+        <table class="table table-bordered table-hover table-striped table">
+            <thead>
+                <tr>
+                    <td align="center"><strong>Full Name</strong></td>
+                    <td align="center"><strong>Birthdate</strong></td>
+                    <td align="center"><strong>Salary</strong></td>
+                    <td align="center"><strong>Date Hired</strong></td>
+                    <td align="center"><strong>Record Valid?</strong></td>
+                    <td align="center"><strong>GUID</strong></td>
+                </tr>
+            </thead>
+            <tbody>
+                @*   Replace MinValues with blank text for a neater display    *@
+                @*   Cast valid Salary, Birthday, and DateHired to string type, formatted for neat display    *@
+                @foreach (var line in Model.Employee)
+                {
+                    var Sal = String.Empty;
+                    if (line.Salary != Decimal.MinValue)
+                    {
+                        Sal = line.Salary.ToString("c");
+                    }
+
+                    var Bday = String.Empty;
+                    if (line.Birthdate != DateTime.MinValue)
+                    {
+                        Bday = line.Birthdate.ToString("MM/dd/yyyy");
+                    }
+
+                    var Hireday = String.Empty;
+                    if (line.DateHired != DateTime.MinValue)
+                    {
+                        Hireday = line.DateHired.ToString("MM/dd/yyyy");
+                    }
+                    <tr>
+                        <td>@line.FullName</td>
+                        <td>@Bday</td>
+                        <td align="right">@Sal</td>
+                        <td>@Hireday</td>
+                        <td>@line.PrintIfValid</td>
+                        <td>@line.Id</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        }
+
+        @*     If there is an exception from parsing the data, then the Exception error message is displayed   *@
+        else
+        {
+        <hd>@Model.Exception</hd>
+        }
+    </div>
+}

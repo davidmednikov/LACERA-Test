@@ -1,0 +1,9 @@
+﻿@model TestWebApp.Models.HomeViewModels
+
+@{
+    Model.Title = "About";
+}
+<h2>@Model.Title.</h2>
+<h4>@Model.Message</h4>
+
+<p>This WebApp asks you to upload a CSV file on the /Home/Index/ View. It then runs the file through a parsing class and redirects the user back to the /Home/Index/ page, this time displaying the data in table form instead of asking the user for the file.</p>

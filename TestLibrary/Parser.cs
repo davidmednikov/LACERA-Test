@@ -20,7 +20,7 @@ namespace TestLibrary
                 throw new ArgumentException("FileName", "filename must exist");
             }
 
-            // Send FileName string to ReadFile method, returns list of strings
+            // Send FileName string to ReadFile method, returns array of strings
             string[] lines = ReadFile(FileName);
 
             // Returns parsed data
@@ -51,10 +51,10 @@ namespace TestLibrary
                     continue;
                 }
 
-                // Create list of employee data from parsing line
+                // Create instance of Employee class with data from parsing line
                 Employee employee = ParseLine(row);
 
-                // Add list of employee data to list of all employees
+                // Add instance of employee class to list of all employees
                 employees.Add(employee);
             }
 
@@ -93,7 +93,7 @@ namespace TestLibrary
                 }
             }
 
-            // Arrange string to be printed to employee instance depending on whether or not data is valid or invalid
+            // Add string to be printed to employee instance depending on whether or not data is valid or invalid
             if (employee.IsValid)
             {
                 employee.PrintIfValid = "Data is valid";
@@ -103,7 +103,7 @@ namespace TestLibrary
                 employee.PrintIfValid = "Invalid record found";
             }
 
-            // Returns list of employee data
+            // Returns list of employee data for ParseLines() function
             return employee;
         }
     }

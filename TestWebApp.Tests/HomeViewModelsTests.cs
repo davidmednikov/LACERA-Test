@@ -21,7 +21,7 @@ namespace TestWebApp.Tests
             Assert.IsNull(sut.Exception);
             // Boolean cannot be false, so assert that sut.Uploaded is False
             Assert.IsFalse(sut.Uploaded);
-            Assert.IsNull(sut.Employee);
+            Assert.IsNull(sut.Employees);
         }
     }
 }

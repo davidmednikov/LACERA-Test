@@ -11,7 +11,7 @@
         <form method="post" enctype="multipart/form-data">
             <input type="file" accept=".csv" name="CSV" required/>
             <br />
-            <input type="submit" value="Upload CSV" name="csv" formaction="/Home/Index/" />
+            <input type="submit" value="Upload CSV" name="CSV" formaction="/Home/Index/" />
         </form>
     </div>
 }
@@ -19,7 +19,6 @@
 @*     Once CSV has been uploaded, Model.Uploaded is changed to True. Thus this section of code runs when the Index View is initialized    *@
 else
 {
-    Model.Title = "Results";
     <div class="jumbotron">
 
         <h2>@Model.Title</h2>
@@ -32,7 +31,7 @@ else
 
         <h5>A field that appears blank contained invalid data.</h5>
 
-        <table class="table table-bordered table-hover table-striped table">
+        <table class="table table-bordered table-hover table-striped table-responsive">
             <thead>
                 <tr>
                     <td align="center"><strong>Full Name</strong></td>
@@ -46,7 +45,7 @@ else
             <tbody>
                 @*   Replace MinValues with blank text for a neater display    *@
                 @*   Cast valid Salary, Birthday, and DateHired to string type, formatted for neat display    *@
-                @foreach (var line in Model.Employee)
+                @foreach (var line in Model.Employees)
                 {
                     var Sal = String.Empty;
                     if (line.Salary != Decimal.MinValue)

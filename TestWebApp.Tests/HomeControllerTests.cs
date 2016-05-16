@@ -58,7 +58,7 @@ namespace TestWebApp.Tests
             var sut = new HomeViewModels();
             Parser parser = new TestLibrary.Parser();
             string FilePath = @"C:\Users\davem\Documents\CS\lacera test\MyTest\EmployeeList.csv";
-            sut.Employee = parser.Parse(FilePath);
+            sut.Employees = parser.Parse(FilePath);
 
             // Act
 
@@ -76,7 +76,7 @@ namespace TestWebApp.Tests
             string FilePath = @"C:\Users\davem\Documents\CS\lacera test\MyTest\EmployeeList1.csv";    
 
             // Act
-            sut.Employee = parser.Parse(FilePath);
+            sut.Employees = parser.Parse(FilePath);
 
             // Assert
             // Expected Exception
@@ -92,7 +92,7 @@ namespace TestWebApp.Tests
             string FilePath = null;
 
             // Act
-            sut.Employee = parser.Parse(FilePath);
+            sut.Employees = parser.Parse(FilePath);
 
             // Assert
             // Expected Exception

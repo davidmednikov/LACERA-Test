@@ -22,6 +22,6 @@ namespace TestWebApp.Models
         public bool Uploaded { get; set; }
 
         // Model element that contains instance of Employee class
-        public List<Employee> Employee { get; set; }
+        public List<Employee> Employees { get; set; }
     }
 }

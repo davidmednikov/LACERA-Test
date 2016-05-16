@@ -17,7 +17,7 @@ namespace TestWebApp.Controllers
 
             // TempData["FilePath"] is a TempData string that contains the location of the CSV on the web server.
             // The string is created when the CSV is uploaded. The following code only runs when TempData["FilePath"] is not null.
-            // If TempData["FilePath"] is null then the program executes the code in the "else" loop, which displays the form to upload the CSV.
+            // If TempData["FilePath"] is null then the program executes the code in the "Else" loop, which displays the form to upload the CSV.
 
             if (TempData["FilePath"] != null)
             {
@@ -25,7 +25,7 @@ namespace TestWebApp.Controllers
                 model.Message = "Your results page.";
 
                 // This section of code only runs when the CSV has been uploaded. This particular line changes model.Uploaded to True so that the
-                // Index.cshtml page (which has an if loop with model.Uploaded as the argument) displays the Results once the CSV has been uploaded and parsed.
+                // Index.cshtml page (which has an If loop with model.Uploaded as the argument) displays the Results once the CSV has been uploaded and parsed.
                 model.Uploaded = true;
 
                 // Try to parse the data, return an exception if there is an error
@@ -38,7 +38,7 @@ namespace TestWebApp.Controllers
                     String path = TempData["FilePath"].ToString();
 
                     // Run Parse method using file path string created above
-                    model.Employee = parser.Parse(path);
+                    model.Employees = parser.Parse(path);
 
                     return View(model);
                 }
@@ -101,10 +101,10 @@ namespace TestWebApp.Controllers
                 string path = Path.Combine(Server.MapPath("~/Content/"), FileName);
 
                 // Saves path string to TempData so that a different request can access it
-                // Also allows if loop in Index action to determine whether or not TempData["FilePath"] is null
+                // Also allows If loop in Index action to determine whether or not TempData["FilePath"] is null
                 TempData["FilePath"] = path;
 
-                // Redirect back to Index action, this time with data in TempData["FilePath"] so that the if loop executes
+                // Redirect back to Index action, this time with data in TempData["FilePath"] so that the If loop executes
                 return RedirectToAction("Index", "Home");
 
             }

@@ -1,11 +1,12 @@
 ﻿@model TestWebApp.Models.HomeViewModels
 
-@*     This if loop runs before CSV model has been uploaded. Once CSV has been uploaded, Model.Uploaded is changed to true so that the else loop runs    *@
+@*     This If loop runs before CSV model has been uploaded. Once CSV has been uploaded, Model.Uploaded is changed to True so that the Else loop runs    *@
 @if (Model.Uploaded == false)
 {
     Model.Title = "Upload";
 
-    @*    Create form asking for file upload, with post method so that the HttpPost action method is run after the upload. Enctype attribute ensures that actual file is uploaded, not just file name    *@
+    @*    Create form asking for file upload, with post method so that the HttpPost action method is run after the upload.   *@
+    @*    Enctype attribute ensures that actual file is uploaded, not just file name    *@
     <div class="jumbotron">
         <h2>@Model.Title</h2>
         <form method="post" enctype="multipart/form-data">
@@ -17,7 +18,7 @@
     </div>
 }
 
-@*     Once CSV has been uploaded, Model.Uploaded is changed to false. Thus this section of code runs when the index View is initialized    *@
+@*     Once CSV has been uploaded, Model.Uploaded is changed to True. Thus this section of code runs when the Index View is initialized    *@
 else
 {
     Model.Title = "Results";

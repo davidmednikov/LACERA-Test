@@ -16,7 +16,7 @@ namespace TestConsole
                 // Create parser object from Parser class
                 Parser parser = new Parser();
 
-                // Parse file and return list to employees object
+                // Parse file and return data to list of employees
                 var employees = parser.Parse(FileName);
 
                 // Loop through each entry in list of employees to print out their info

@@ -21,7 +21,7 @@ namespace TestWebApp.Models
         // Model element that contains boolean, changes from false to true after uploading CSV
         public bool Uploaded { get; set; }
 
-        // Model element that contains instance of Employee class
+        // Model element that contains list of Employee class instances
         public List<Employee> Employees { get; set; }
     }
 }

@@ -21,6 +21,7 @@ namespace TestWebApp.Controllers
 
             if (TempData["FilePath"] != null)
             {
+                model.Title = "Results";
                 model.Message = "Your results page.";
 
                 // This section of code only runs when the CSV has been uploaded. This particular line changes model.Uploaded to True so that the
@@ -44,6 +45,7 @@ namespace TestWebApp.Controllers
                 // If parsing causes an error, return model with Exception message
                 catch (Exception ex)
                 {
+                    model.Message = "An errror was encountered while parsing.";
                     model.Exception = ex.Message;
                     return View(model);
                 }
@@ -53,6 +55,7 @@ namespace TestWebApp.Controllers
             // The following code only runs when TempData["FilePath"] is null, which happens if a file has not been uploaded yet.
             else
             {
+                model.Title = "Upload";
                 model.Message = "Parse your CSV file here.";
                 return View(model);
             }
@@ -63,6 +66,7 @@ namespace TestWebApp.Controllers
         public ActionResult About()
         {
             var model = new HomeViewModels();
+            model.Title = "About";
             model.Message = "This WebApp parses a CSV and returns the data in table form.";
 
             return View(model);
@@ -72,6 +76,7 @@ namespace TestWebApp.Controllers
         public ActionResult Contact()
         {
             var model = new HomeViewModels();
+            model.Title = "Contact";
             model.Message = "Contact me at the following:";
 
             return View(model);

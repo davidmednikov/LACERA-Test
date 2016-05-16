@@ -17,7 +17,8 @@ namespace TestLibrary
         public DateTime Birthdate { get; set; }
         public Decimal Salary { get; set; }
         public DateTime DateHired { get; set; }
-        //boolean and string to test and print whether the data is valid
+        
+        // Boolean method and string to test print whether the data is valid
         public String PrintIfValid { get; set; }
 
         // Method to flag records as invalid if the name is blank, salary is not greater than 0, or the dates are invalid

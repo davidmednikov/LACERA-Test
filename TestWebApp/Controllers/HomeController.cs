@@ -9,11 +9,15 @@ namespace TestWebApp.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IFileValidator fileValidator;
+        private readonly LineParser lineParser;
+
         // Action Method for Index Page
         public ActionResult Index()
         {
             // Create new instance of HomeViewModel
             var model = new HomeViewModels();
+
 
             // TempData["FilePath"] is a TempData string that contains the location of the CSV on the web server.
             // The string is created when the CSV is uploaded. The following code only runs when TempData["FilePath"] is not null.
@@ -32,7 +36,7 @@ namespace TestWebApp.Controllers
                 try
                 {
                     // Initiate parser object from Parser class
-                    Parser parser = new TestLibrary.Parser();
+                    Parser parser = new TestLibrary.Parser(fileValidator, lineParser);
 
                     // Take TempData["FilePath"] from HttpPost method and assign it to String called path, to be used as an argument for Parse method
                     String path = TempData["FilePath"].ToString();

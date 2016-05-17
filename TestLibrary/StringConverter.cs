@@ -2,53 +2,46 @@
 
 namespace TestLibrary
 {
-    public class StringConverter
+    /// <summary>
+    /// Performs conversions from strings to various types without throwing exceptions
+    /// as needed by the parser.
+    /// </summary>
+    public class StringConverter : IStringConverter
     {
-        // Method to convert date in string form to DateTime type
-        public DateTime ConvertDate(string entry)
+        /// <summary>
+        /// Convert a string to <see cref="DateTime"/>.
+        /// </summary>
+        /// <param name="text">Contains the text that should be parsed to date.</param>
+        /// <returns>A <see cref="DateTime"/> with the value converted from the parameter, or
+        /// returns <see cref="DateTime.MinValue"/> if the text is an invalid date.</returns>
+        public DateTime ConvertDate(string text)
         {
-            // Return MinValue of DateTime if field is null or blank
-            if (string.IsNullOrWhiteSpace(entry))
+            if (string.IsNullOrWhiteSpace(text))
             {
                 return DateTime.MinValue;
             }
 
-            // Create variable date of type DateTime
             DateTime date;
 
-            // If string can be converted to DateTime, return date. if string cannot be converted to DateTime, return MinValue
-            if (DateTime.TryParse(entry, out date))
-            {
-                return date;
-            }
-            else
-            {
-                return DateTime.MinValue;
-            }
-
+            return DateTime.TryParse(text, out date) ? date : DateTime.MinValue;
         }
 
-        // Method to convert salary in string form to Decimal type
+        /// <summary>
+        /// Convert a string to <see cref="Decimal"/>.
+        /// </summary>
+        /// <param name="text">Contains the text that should be parsed to decimal.</param>
+        /// <returns>A <see cref="Decimal"/> with the value converted from the parameter, or
+        /// returns <see cref="Decmal.MinValue"/> if the text is an invalid decimal.</returns>
         public Decimal ConvertSalary(string entry)
         {
-            // Return MinValue of Decimal if field is null or blank
             if (string.IsNullOrWhiteSpace(entry))
             {
                 return Decimal.MinValue;
             }
 
-            // Create variable salary of type Decimal
             Decimal salary;
 
-            // If string can be converted to Decimal, return salary. if string cannot be converted to Decimal, return MinValue
-            if (Decimal.TryParse(entry, out salary))
-            {
-                return salary;
-            }
-            else
-            {
-                return Decimal.MinValue;
-            }
+            return Decimal.TryParse(entry, out salary) ? salary : Decimal.MinValue;
         }
     }
 }

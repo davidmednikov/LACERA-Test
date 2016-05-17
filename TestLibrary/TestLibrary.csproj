@@ -42,6 +42,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LineParser.cs" />
+    <Compile Include="SuperFileValidator.cs" />
+    <Compile Include="FileValidator.cs" />
+    <Compile Include="IStringConverter.cs" />
+    <Compile Include="IFileValidator.cs" />
     <Compile Include="StringConverter.cs" />
     <Compile Include="Employee.cs" />
     <Compile Include="Parser.cs" />

@@ -13,8 +13,14 @@ namespace TestConsole
             // Use try method to parse
             try
             {
+                // Create dependencies for the Parser
+                //var fileConverter = new FileValidator();
+                var fileValidator = new SuperFileValidator();
+                var stringConverter = new StringConverter();
+                var lineParser = new LineParser(stringConverter);
+
                 // Create parser object from Parser class
-                Parser parser = new Parser();
+                Parser parser = new Parser(fileValidator, lineParser);
 
                 // Parse file and return data to list of employees
                 var employees = parser.Parse(FileName);

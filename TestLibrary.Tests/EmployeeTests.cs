@@ -20,7 +20,7 @@ namespace TestLibrary.Tests
         }
 
         [TestMethod]
-        public void ShouldShowInvalidWhenFieldsAreMissing()
+        public void ShouldBeInvalidWhenFieldsAreMissing()
         {
             // Arrange
             Employee sut = new Employee();
@@ -32,13 +32,10 @@ namespace TestLibrary.Tests
         }
 
         [TestMethod]
-        public void ShouldShowInvalidWhenBirthdateIsInvalid()
+        public void ShouldBeInvalidWhenBirthdateIsInvalid()
         {
             // Arrange
-            Employee sut = new Employee();
-            sut.FullName = "FullName";
-            sut.DateHired = DateTime.Parse("07/04/1776");
-            sut.Salary = 100000;
+            Employee sut = CreateSut();
 
             // Act
             try
@@ -55,13 +52,10 @@ namespace TestLibrary.Tests
         }
 
         [TestMethod]
-        public void ShouldShowInvalidWhenDateHiredIsInvalid()
+        public void ShouldBeInvalidWhenDateHiredIsInvalid()
         {
             // Arrange
-            Employee sut = new Employee();
-            sut.FullName = "FullName";
-            sut.Birthdate = DateTime.Parse("07/04/1776");
-            sut.Salary = 100000;
+            Employee sut = CreateSut();
 
             // Act
             try
@@ -78,29 +72,30 @@ namespace TestLibrary.Tests
         }
 
         [TestMethod]
-        public void ShouldShowInvalidWhenSalaryIsNotGreaterThanZero()
+        public void ShouldBeInvalidWhenSalaryIsNotGreaterThanZero()
         {
             // Arrange
-            Employee sut = new Employee();
-            sut.FullName = "FullName";
-            sut.Birthdate = DateTime.Parse("07/04/1776");
-            sut.DateHired = DateTime.Parse("07/04/1776");
-            sut.Salary = 0;
+            Employee sut = CreateSut();
 
             // Act
+            try
+            {
+                sut.Salary = Decimal.Parse("-1000");
+            }
+            catch
+            {
+                sut.DateHired = DateTime.MinValue;
+            }
 
             // Assert
             Assert.IsFalse(sut.IsValid, "Salary should be invalid");
         }
 
         [TestMethod]
-        public void ShouldShowInvalidWhenSalaryIsInvalid()
+        public void ShouldBeInvalidWhenSalaryIsInvalid()
         {
             // Arrange
-            Employee sut = new Employee();
-            sut.FullName = "FullName";
-            sut.Birthdate = DateTime.Parse("07/04/1776");
-            sut.DateHired = DateTime.Parse("07/04/1776");
+            Employee sut = CreateSut();
 
             // Act
             try
@@ -117,14 +112,10 @@ namespace TestLibrary.Tests
         }
 
         [TestMethod]
-        public void ShouldShowValidIfAllFieldsAreValid()
+        public void ShouldBeValidIfAllFieldsAreValid()
         {
             // Arrange
-            Employee sut = new Employee();
-            sut.FullName = "FullName";
-            sut.Birthdate = DateTime.Parse("11/20/1992");
-            sut.DateHired = DateTime.Parse("05/12/2016");
-            sut.Salary = 55000;
+            Employee sut = CreateSut();
 
             // Act
 
@@ -132,5 +123,15 @@ namespace TestLibrary.Tests
             Assert.IsTrue(sut.IsValid, "Employee should be valid");
         }
 
+        private static Employee CreateSut()
+        {
+            return new Employee()
+            {
+                FullName = "FullName",
+                Birthdate = DateTime.Parse("11/20/1992"),
+                DateHired = DateTime.Parse("05/12/2016"),
+                Salary = 55000
+            };
+        }
     }
 }

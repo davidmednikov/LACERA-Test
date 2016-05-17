@@ -9,6 +9,13 @@ namespace TestWebApp.Tests
     [TestClass]
     public class HomeControllerTests
     {
+        private readonly Parser parser;
+
+        public HomeControllerTests(Parser parser)
+        {
+            this.parser = parser;
+        }
+
         [TestMethod]
         public void ShouldShowUploadViewWithNullFilePath()
         {
@@ -56,7 +63,6 @@ namespace TestWebApp.Tests
         {
             // Arrange
             var sut = new HomeViewModels();
-            Parser parser = new TestLibrary.Parser();
             string FilePath = @"C:\Users\davem\Documents\CS\lacera test\MyTest\EmployeeList.csv";
             sut.Employees = parser.Parse(FilePath);
 
@@ -72,7 +78,6 @@ namespace TestWebApp.Tests
         {
             // Arrange
             var sut = new HomeViewModels();
-            Parser parser = new TestLibrary.Parser();
             string FilePath = @"C:\Users\davem\Documents\CS\lacera test\MyTest\EmployeeList1.csv";    
 
             // Act
@@ -88,7 +93,6 @@ namespace TestWebApp.Tests
         {
             // Arrange
             var sut = new HomeViewModels();
-            Parser parser = new TestLibrary.Parser();
             string FilePath = null;
 
             // Act
@@ -103,7 +107,6 @@ namespace TestWebApp.Tests
         {
             // Arrange
             var sut = new HomeViewModels();
-            Parser parser = new TestLibrary.Parser();
             string FilePath = @"C:\Users\davem\Documents\CS\lacera test\MyTest\EmployeeList.csv";
 
             // Act

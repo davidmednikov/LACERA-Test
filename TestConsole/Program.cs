@@ -5,32 +5,37 @@ namespace TestConsole
 {
     class Program
     {
+        /// <summary>
+        /// Runs the program by parsing the file, given as a startup argument, and displaying the employee data in table form.
+        /// </summary>
+        /// <param name="args">Uses file path as startup argument</param>
         static void Main(string[] args)
         {
-            // Get filepath as startup argument
             var FileName = args[0];
 
-            // Use try method to parse
             try
             {
-                // Create dependencies for the Parser
-                //var fileConverter = new FileValidator();
+                /// <summary>
+                /// Create dependencies for Parser class.
+                /// </summary>
                 var fileValidator = new SuperFileValidator();
                 var stringConverter = new StringConverter();
-                var lineParser = new LineParser(stringConverter);
+                var employeeGenerator = new EmployeeGenerator(stringConverter);
+                var lineParser = new LineParser(stringConverter, employeeGenerator);
 
-                // Create parser object from Parser class
                 Parser parser = new Parser(fileValidator, lineParser);
 
-                // Parse file and return data to list of employees
                 var employees = parser.Parse(FileName);
 
-                // Loop through each entry in list of employees to print out their info
+                var TableHeader = "Full Name\t|Date of Birth\t|Salary\t|Date Hired\t|Valid Employee?";
+                Console.WriteLine(TableHeader);
+
+                /// <summary>
+                /// Loops through each employee in <see cref="employees"/>, changes Decimal.MinValue to 0 for neater display, and prints out parsing results in table form.
+                /// </summary>
+
                 foreach (var employee in employees)
                 {
-
-                    // Decimal.MinValue doesn't print out well, so replacing MinValue in 
-                    // Employee.Salary with 0 for the sake of neat printing
 
                     if (employee.Salary == Decimal.MinValue)
                     {
@@ -38,17 +43,15 @@ namespace TestConsole
                     }
                         
                     // Print out each employee's data
-                    var PrintLine = $"{employee.FullName}\t{employee.Birthdate.ToShortDateString()}\t${employee.Salary}\t{employee.DateHired.ToShortDateString()}\t{employee.PrintIfValid}";
+                    var PrintLine = $"{employee.FullName}\t|{employee.Birthdate.ToShortDateString()}\t|${employee.Salary}\t|{employee.DateHired.ToShortDateString()}\t|{employee.PrintIfValid}";
                     Console.WriteLine(PrintLine);
                 }
             }
-            // Throw exception if parsing fails
             catch (Exception error)
             {
                 Console.WriteLine(error.Message);
             }
 
-            // Wait for user to press enter before quitting
             Console.ReadKey();
         }
     }

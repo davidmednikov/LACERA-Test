@@ -9,12 +9,11 @@ namespace TestWebApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IFileValidator fileValidator;
-        private readonly LineParser lineParser;
 
         // Action Method for Index Page
         public ActionResult Index()
         {
+            
             // Create new instance of HomeViewModel
             var model = new HomeViewModels();
 
@@ -36,7 +35,12 @@ namespace TestWebApp.Controllers
                 try
                 {
                     // Initiate parser object from Parser class
+                    StringConverter stringConverter = new TestLibrary.StringConverter();
+                    FileValidator fileValidator = new TestLibrary.FileValidator();
+                    EmployeeGenerator employeeGenerator = new TestLibrary.EmployeeGenerator(stringConverter);
+                    LineParser lineParser = new TestLibrary.LineParser(stringConverter, employeeGenerator);
                     Parser parser = new TestLibrary.Parser(fileValidator, lineParser);
+
 
                     // Take TempData["FilePath"] from HttpPost method and assign it to String called path, to be used as an argument for Parse method
                     String path = TempData["FilePath"].ToString();

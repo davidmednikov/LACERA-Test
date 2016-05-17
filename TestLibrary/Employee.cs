@@ -20,11 +20,26 @@ namespace TestLibrary
         /// </summary>
         public Guid Id { get; set; }
 
+        /// <summary>
+        /// Gets or sets the full name of the employee.
+        /// </summary>
         public String FullName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the birthdate of the employee.
+        /// </summary>
         public DateTime Birthdate { get; set; }
+
+        /// <summary>
+        ///  Gets or sets the salary of the employee.
+        /// </summary>
         public Decimal Salary { get; set; }
+
+        /// <summary>
+        /// Gets or sets the hire date of the employee.
+        /// </summary>
         public DateTime DateHired { get; set; }
-        public DateTime DateTerminated { get; set; }
+
 
         /// <summary>
         /// Gets or sets a string to be printed that tells the user whether or not the data is valid.

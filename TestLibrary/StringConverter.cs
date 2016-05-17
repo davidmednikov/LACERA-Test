@@ -32,16 +32,16 @@ namespace TestLibrary
         /// <param name="text">Contains the text that should be parsed to decimal.</param>
         /// <returns>A <see cref="Decimal"/> with the value converted from the parameter, or
         /// returns <see cref="Decmal.MinValue"/> if the text is an invalid decimal.</returns>
-        public Decimal ConvertSalary(string entry)
+        public Decimal ConvertSalary(string text)
         {
-            if (string.IsNullOrWhiteSpace(entry))
+            if (string.IsNullOrWhiteSpace(text))
             {
                 return Decimal.MinValue;
             }
 
             Decimal salary;
 
-            return Decimal.TryParse(entry, out salary) ? salary : Decimal.MinValue;
+            return Decimal.TryParse(text, out salary) ? salary : Decimal.MinValue;
         }
     }
 }

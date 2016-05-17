@@ -7,16 +7,21 @@ namespace TestLibrary.Tests
     [TestClass]
     public class ParserTests
     {
+        private readonly Parser parser;
+
+        public ParserTests(Parser parser)
+        {
+            this.parser = parser;
+        }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ShouldThrowExceptionIfGivenAnInvalidFileName()
         {
             // Arrange
-            Parser sut = new Parser();
 
             // Act
-            sut.Parse(null);
+            parser.Parse(null);
 
             // Assert
             // Expected exception
@@ -27,10 +32,9 @@ namespace TestLibrary.Tests
         public void ShouldThrowExceptionIfGivenNonexistentFileName()
         {
             // Arrange
-            Parser sut = new Parser();
 
             // Act
-            sut.Parse("readme.txt");
+            parser.Parse("readme.txt");
 
             // Assert
             // Expected exception
@@ -40,13 +44,12 @@ namespace TestLibrary.Tests
         public void ShouldNotThrowExceptionIfGivenValidFileName()
         {
             // Arrange
-            Parser sut = new Parser();
             string FileName = @"C:\Users\davem\Documents\CS\lacera test\MyTest\EmployeeList.csv";
 
             // Act
             try
             {
-                sut.Parse(FileName);
+                parser.Parse(FileName);
             }
             catch
             {
@@ -63,13 +66,12 @@ namespace TestLibrary.Tests
         public void ShouldReadAllLinesOfValidFile()
         {
             // Arrange
-            Parser sut = new Parser();
             string FileName = @"C:\Users\davem\Documents\CS\lacera test\MyTest\EmployeeList.csv";
 
             // Act
             try
             {
-                sut.Parse(FileName);
+                parser.Parse(FileName);
             }
             catch
             {
@@ -84,11 +86,10 @@ namespace TestLibrary.Tests
         public void ShouldParseAllFiveEmployees()
         {
             // Arrange
-            Parser sut = new Parser();
             string FileName = @"C:\Users\davem\Documents\CS\lacera test\MyTest\EmployeeList.csv";
 
             // Act
-            List<Employee> employees = sut.Parse(FileName);
+            List<Employee> employees = parser.Parse(FileName);
 
             // Assert
             Assert.AreEqual(5, employees.Count);
@@ -98,11 +99,10 @@ namespace TestLibrary.Tests
         public void ShouldFlagEmployeesWithMissingFieldsAsInvalid()
         {
             // Arrange
-            Parser sut = new Parser();
             string FileName = @"C:\Users\davem\Documents\CS\lacera test\MyTest\EmployeeList.csv";
 
             // Act
-            List<Employee> employees = sut.Parse(FileName);
+            List<Employee> employees = parser.Parse(FileName);
 
             // Assert
             Assert.IsFalse(employees[3].IsValid, "Tony Sprona must be invalid");
@@ -112,11 +112,10 @@ namespace TestLibrary.Tests
         public void ShouldFlagEmployeesWithInvalidBirthdateAsInvalid()
         {
             // Arrange
-            Parser sut = new Parser();
             string FileName = @"C:\Users\davem\Documents\CS\lacera test\MyTest\EmployeeList.csv";
 
             // Act
-            List<Employee> employee = sut.Parse(FileName);
+            List<Employee> employee = parser.Parse(FileName);
 
             // Assert
             Assert.IsFalse(employee[2].IsValid, "Mark Stowell must be invalid");
@@ -126,11 +125,10 @@ namespace TestLibrary.Tests
         public void ShouldFlagEmployeesWithInvalidSalaryAsInvalid()
         {
             // Arrange
-            Parser sut = new Parser();
             string FileName = @"C:\Users\davem\Documents\CS\lacera test\MyTest\EmployeeList.csv";
 
             // Act
-            List<Employee> employees = sut.Parse(FileName);
+            List<Employee> employees = parser.Parse(FileName);
 
             // Assert
             Assert.IsFalse(employees[2].IsValid, "Mark Stowell must be invalid");
@@ -140,11 +138,10 @@ namespace TestLibrary.Tests
         public void ShouldFlagEmployeesWithInvalidDateHiredAsInvalid()
         {
             // Arrange
-            Parser sut = new Parser();
             string FileName = @"C:\Users\davem\Documents\CS\lacera test\MyTest\EmployeeList.csv";
 
             // Act
-            List<Employee> employees = sut.Parse(FileName);
+            List<Employee> employees = parser.Parse(FileName);
 
             // Assert
             Assert.IsFalse(employees[4].IsValid, "Jan Seveg must be invalid");
@@ -154,11 +151,10 @@ namespace TestLibrary.Tests
         public void ShouldRemoveQuotesFromNames()
         {
             // Arrange
-            Parser sut = new Parser();
             string FileName = @"C:\Users\davem\Documents\CS\lacera test\MyTest\EmployeeList.csv";
 
             // Act
-            List<Employee> employees = sut.Parse(FileName);
+            List<Employee> employees = parser.Parse(FileName);
 
             // Assert
             Assert.AreEqual("John Smith", employees[0].FullName, "Name should have no double quotes");
@@ -172,11 +168,10 @@ namespace TestLibrary.Tests
         public void ShouldMarkEmployeesWithValidRecordsAsValid()
         {
             // Arrange
-            Parser sut = new Parser();
             string FileName = @"C:\Users\davem\Documents\CS\lacera test\MyTest\EmployeeList.csv";
 
             // Act
-            List<Employee> employees = sut.Parse(FileName);
+            List<Employee> employees = parser.Parse(FileName);
 
             // Assert
             Assert.IsTrue(employees[0].IsValid, "John Smith's record must be valid");
@@ -187,11 +182,10 @@ namespace TestLibrary.Tests
         public void ShouldMarkEmployeesWithInvalidRecordsAsInvalid()
         {
             // Arrange
-            Parser sut = new Parser();
             string FileName = @"C:\Users\davem\Documents\CS\lacera test\MyTest\EmployeeList.csv";
 
             // Act
-            List<Employee> employees = sut.Parse(FileName);
+            List<Employee> employees = parser.Parse(FileName);
 
             // Assert
             Assert.IsFalse(employees[2].IsValid, "Mark Stowell's record must be valid");

@@ -7,12 +7,18 @@ namespace TestConsoleTests
     [TestClass]
     public class ProgramTests
     {
+        private readonly Parser parser;
+
+        public ProgramTests(Parser parser)
+        {
+            this.parser = parser;
+        }
+
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void ShouldThrowExceptionWithInvalidFilePath()
         {
             // Arrange
-            Parser parser = new Parser();
             String FileName = "notactualfile.csv";
 
             // Act
@@ -27,7 +33,6 @@ namespace TestConsoleTests
         public void ShouldThrowExceptionWithNullFileName()
         {
             // Arrange
-            Parser parser = new Parser();
             String FileName = null;
 
             // Act
@@ -41,7 +46,6 @@ namespace TestConsoleTests
         public void ShouldNotThrowExceptionWithValidFilePath()
         {
             // Arrange
-            Parser parser = new Parser();
             String FileName = @"C:\Users\davem\Documents\CS\lacera test\MyTest\EmployeeList.csv";
 
             // Act
@@ -62,7 +66,6 @@ namespace TestConsoleTests
         public void ShouldReplaceDecimalMinValueWithZeroForNeatPrinting()
         {
             // Arrange
-            Parser parser = new Parser();
             String FileName = @"C:\Users\davem\Documents\CS\lacera test\MyTest\EmployeeList.csv";
 
             // Act

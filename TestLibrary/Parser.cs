@@ -39,7 +39,7 @@ namespace TestLibrary
             string[] lines = File.ReadAllLines(fileName);
 
             // Returns parsed data
-            return this.lineParser.Parse(lines);
+            return this.lineParser.ParseAll(lines);
         }
     }
 }

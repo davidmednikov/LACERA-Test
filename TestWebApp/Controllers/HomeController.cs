@@ -11,10 +11,23 @@ namespace TestWebApp.Controllers
 {
     public class HomeController : Controller
     {
-        
+        private readonly Parser parser;
+        private readonly FileValidator fileValidator;
+        private readonly LineParser lineParser;
+        private readonly EmployeeGenerator employeeGenerator;
+        private readonly StringConverter stringConverter;
+
+        public HomeController()
+        {
+            fileValidator = new FileValidator();
+            stringConverter = new StringConverter();
+            employeeGenerator = new EmployeeGenerator(stringConverter);
+            lineParser = new LineParser(stringConverter, employeeGenerator);
+            parser = new Parser(fileValidator, lineParser); ;
+        }
+
         /// <summary>
-        /// Displays index page. Using TempData as a parameter, View shows uploader interface if file 
-        /// has not been uploaded and shows results table if file has been uploaded.
+        /// Displays index page. Shows uploader interface if no file has been uploaded. Shows results table if file has been uploaded.
         /// </summary>
         /// <param name="TempData["FilePath"]">Contains location of uploaded file on server.</param>
         /// <returns>View with data in model.</returns>
@@ -23,9 +36,9 @@ namespace TestWebApp.Controllers
             var model = new HomeViewModels();
 
             /// <summary>
-            /// Displays results view if TempData["FilePath"] is not null.
+            /// Displays results view if <see cref="TempData["FilePath"]"/> is not null.
             /// </summary>
-            /// <param name ="TempData["FilePath"]">Contains path of uploaded file.</param>
+            /// <param name ="TempData["FilePath"]">TempData that contains path of uploaded file.</param>
             if (TempData["FilePath"] != null)
             {
                 model.Title = "Results";
@@ -34,13 +47,6 @@ namespace TestWebApp.Controllers
 
                 try
                 {
-                    // Initialize dependencies
-                    StringConverter stringConverter = new TestLibrary.StringConverter();
-                    FileValidator fileValidator = new TestLibrary.FileValidator();
-                    EmployeeGenerator employeeGenerator = new TestLibrary.EmployeeGenerator(stringConverter);
-                    LineParser lineParser = new TestLibrary.LineParser(stringConverter, employeeGenerator);
-                    Parser parser = new TestLibrary.Parser(fileValidator, lineParser);
-
                     String path = TempData["FilePath"].ToString();
 
                     using (var db = new EmployeeModelContainer())
@@ -63,7 +69,7 @@ namespace TestWebApp.Controllers
             }
 
             /// <summary>
-            /// Displays upload view if TempData["FilePath"] is null, meaning file has not yet been uploaded.
+            /// Displays upload view if <see cref="TempData["FilePath"]"/> is null, meaning file has not been uploaded.
             /// </summary>
             else
             {
@@ -127,12 +133,12 @@ namespace TestWebApp.Controllers
         /// <param name="dataBase">Table to be cleared.</param>
         public void ClearTable(EmployeeModelContainer dataBase)
         {
-            var ToBeDeleted =
+            var query =
                                 from rows in dataBase.EmployeesDBs
                                 where rows.EmpID <= 1000000
                                 select rows;
 
-            foreach (var rows in ToBeDeleted)
+            foreach (var rows in query)
             {
                 dataBase.EmployeesDBs.Remove(rows);
             }

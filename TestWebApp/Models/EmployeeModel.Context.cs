@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TestWebApp
+namespace TestWebApp.Models
 {
     using System;
     using System.Data.Entity;

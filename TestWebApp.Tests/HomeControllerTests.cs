@@ -3,17 +3,27 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TestWebApp.Models;
 using TestLibrary;
 using System.IO;
+using System.Collections.Generic;
 
 namespace TestWebApp.Tests
 {
     [TestClass]
     public class HomeControllerTests
     {
-        private readonly Parser parser;
+        private Parser parser;
+        private FileValidator fileValidator;
+        private LineParser lineParser;
+        private EmployeeGenerator employeeGenerator;
+        private StringConverter stringConverter;
 
-        public HomeControllerTests(Parser parser)
+        [TestInitialize]
+        public void TestInitialize()
         {
-            this.parser = parser;
+            fileValidator = new FileValidator();
+            stringConverter = new StringConverter();
+            employeeGenerator = new EmployeeGenerator(stringConverter);
+            lineParser = new LineParser(stringConverter, employeeGenerator);
+            parser = new Parser(fileValidator, lineParser); ;
         }
 
         [TestMethod]
@@ -64,9 +74,10 @@ namespace TestWebApp.Tests
             // Arrange
             var sut = new HomeViewModels();
             string FilePath = @"C:\Users\davem\Documents\CS\lacera test\MyTest\EmployeeList.csv";
-            sut.Employees = parser.Parse(FilePath);
 
             // Act
+            var EmployeeList = parser.Parse(FilePath);
+            sut.EmployeesDBs = ListConverter(EmployeeList);
 
             // Assert
             // No Exception
@@ -78,10 +89,11 @@ namespace TestWebApp.Tests
         {
             // Arrange
             var sut = new HomeViewModels();
-            string FilePath = @"C:\Users\davem\Documents\CS\lacera test\MyTest\EmployeeList1.csv";    
+            string FilePath = @"C:\Users\davem\Documents\CS\lacera test\MyTest\EmployeeList1.csv";
 
             // Act
-            sut.Employees = parser.Parse(FilePath);
+            var EmployeeList = parser.Parse(FilePath);
+            sut.EmployeesDBs = ListConverter(EmployeeList);
 
             // Assert
             // Expected Exception
@@ -96,7 +108,8 @@ namespace TestWebApp.Tests
             string FilePath = null;
 
             // Act
-            sut.Employees = parser.Parse(FilePath);
+            var EmployeeList = parser.Parse(FilePath);
+            sut.EmployeesDBs = ListConverter(EmployeeList);
 
             // Assert
             // Expected Exception
@@ -120,6 +133,26 @@ namespace TestWebApp.Tests
 
             // Assert
             Assert.AreEqual(FilePathOnServer, @"C:\Users\davem\Documents\CS\lacera test\MyTest\TestWebApp\Content\EmployeeListTest.csv");
+        }
+
+        public List<EmployeesDB> ListConverter(List<Employee> employeeList)
+        {
+            var convertedList = new List<EmployeesDB>();
+
+            foreach (var emp in employeeList)
+            {
+                var convertedEmployee = new EmployeesDB();
+                convertedEmployee.FullName = emp.FullName;
+                convertedEmployee.Birthdate = emp.Birthdate;
+                convertedEmployee.Salary = emp.Salary;
+                convertedEmployee.DateHired = emp.DateHired;
+                convertedEmployee.IsValid = emp.IsValid;
+                convertedEmployee.PrintIfValid = emp.PrintIfValid;
+                convertedEmployee.Guid = emp.Id;
+
+                convertedList.Add(convertedEmployee);
+            }
+            return convertedList;
         }
     }
 }

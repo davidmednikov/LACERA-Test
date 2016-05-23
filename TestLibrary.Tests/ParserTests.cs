@@ -1,17 +1,29 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using TestLibrary;
+using TestLibrary.Tests;
 
 namespace TestLibrary.Tests
 {
     [TestClass]
     public class ParserTests
     {
-        private readonly Parser parser;
 
-        public ParserTests(Parser parser)
+        private Parser parser;
+        private FileValidator fileValidator;
+        private LineParser lineParser;
+        private EmployeeGenerator employeeGenerator;
+        private StringConverter stringConverter;
+
+        [TestInitialize]
+        public void TestInitialize()
         {
-            this.parser = parser;
+            fileValidator = new FileValidator();
+            stringConverter = new StringConverter();
+            employeeGenerator = new EmployeeGenerator(stringConverter);
+            lineParser = new LineParser(stringConverter, employeeGenerator);
+            parser = new Parser(fileValidator, lineParser); ;
         }
 
         [TestMethod]

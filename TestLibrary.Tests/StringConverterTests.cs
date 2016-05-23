@@ -6,11 +6,12 @@ namespace TestLibrary.Tests
     [TestClass]
     public class StringConverterTests
     {
+        StringConverter sut = new StringConverter();
+
         [TestMethod]
         public void ShouldReturnMinValueWhenDateIsInvalid()
         {
             // Arrange
-            StringConverter sut = new StringConverter();
             var expected = DateTime.MinValue;
 
             // Act
@@ -24,7 +25,6 @@ namespace TestLibrary.Tests
         public void ShouldReturnMinValueWhenDateIsBlank()
         {
             // Arrange
-            StringConverter sut = new StringConverter();
             var expected = DateTime.MinValue;
 
             // Act
@@ -38,7 +38,6 @@ namespace TestLibrary.Tests
         public void ShouldConvertDateFromValidString()
         {
             // Arrange
-            StringConverter sut = new StringConverter();
             var expected = new DateTime(2016, 05, 12);
 
             // Act
@@ -52,7 +51,6 @@ namespace TestLibrary.Tests
         public void ShouldReturnMinValueWhenSalaryIsInvalid()
         {
             // Arrange
-            StringConverter sut = new StringConverter();
             var expected = Decimal.MinValue;
 
             // Act
@@ -66,7 +64,6 @@ namespace TestLibrary.Tests
         public void ShouldReturnMinValueWhenSalaryIsBlank()
         {
             // Arrange
-            StringConverter sut = new StringConverter();
             var expected = Decimal.MinValue;
 
             // Act
@@ -80,7 +77,6 @@ namespace TestLibrary.Tests
         public void ShouldConvertSalaryFromValidString()
         {
             // Arrange
-            StringConverter sut = new StringConverter();
             var expected = new Decimal(125000);
 
             // Act

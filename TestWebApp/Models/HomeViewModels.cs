@@ -1,27 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using TestLibrary;
 
 namespace TestWebApp.Models
 {
-    // This model will be used for all Actions under the Home Controller
+    /// <summary>
+    /// Contains all <see cref="Home"/> View data to be represented in the model.
+    /// </summary>
     public class HomeViewModels
     {
-        // Model element with page title
+        /// <summary>
+        /// Gets or sets the <see cref="Title"/> of the Model View.
+        /// </summary>
         public String Title { get; set; }
-
-        // Model element with message to display to user
+        /// <summary>
+        /// Gets or sets the <see cref="Message"/> of the Model View.
+        /// </summary>
         public String Message { get; set; }
-
-        // Model element for containing exception
+        /// <summary>
+        /// Gets or sets the <see cref="Exception"/> of the Model View.
+        /// </summary>
         public String Exception { get; set; }
-
-        // Model element that contains boolean, changes from false to true after uploading CSV
+        /// <summary>
+        /// Gets or sets a boolean that states whether or not the file has been uploaded.
+        /// </summary>
         public bool Uploaded { get; set; }
-
-        // Model element that contains list of Employee class instances
-        public List<Employee> Employees { get; set; }
+        /// <summary>
+        /// Gets or sets a list of Employees in the database.
+        /// </summary>
+        public List<EmployeesDB> EmployeesDBs { get; set; }
     }
 }

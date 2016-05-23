@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace TestLibrary
 {
     /// <summary>
-    /// Assigns data gathered from parsing to instance of the employee class.
+    /// Assigns data gathered from parsing to new instance of the employee class.
     /// </summary>
     public class EmployeeGenerator
     {
@@ -22,7 +22,7 @@ namespace TestLibrary
         }
 
         /// <summary>
-        /// Parses employee data sent from <c>ParseLine</c> method and assigns values to variables within instance of the <see cref="Employee"/> class.
+        /// Parses employee data sent from <c>ParseLine</c> method and assigns values to variables within new instance of the <see cref="Employee"/> class.
         /// </summary>
         /// <param name="dataEntries">Fields of data that have been split by commas and placed into a string list.</param>
         /// <param name="lineLength">Number of elements per line so <c>for</c> loop stops after all elements in the line have been parsed.</param>

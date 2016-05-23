@@ -33,7 +33,6 @@ namespace TestConsole
                 /// <summary>
                 /// Loops through each employee in <see cref="employees"/>, changes Decimal.MinValue to 0 for neater display, and prints out parsing results in table form.
                 /// </summary>
-
                 foreach (var employee in employees)
                 {
 
@@ -42,7 +41,6 @@ namespace TestConsole
                         employee.Salary = 0;
                     }
                         
-                    // Print out each employee's data
                     var PrintLine = $"{employee.FullName}\t|{employee.Birthdate.ToShortDateString()}\t|${employee.Salary}\t|{employee.DateHired.ToShortDateString()}\t|{employee.PrintIfValid}";
                     Console.WriteLine(PrintLine);
                 }

@@ -7,11 +7,20 @@ namespace TestConsoleTests
     [TestClass]
     public class ProgramTests
     {
-        private readonly Parser parser;
+        private Parser parser;
+        private FileValidator fileValidator;
+        private LineParser lineParser;
+        private EmployeeGenerator employeeGenerator;
+        private StringConverter stringConverter;
 
-        public ProgramTests(Parser parser)
+        [TestInitialize]
+        public void TestInitialize()
         {
-            this.parser = parser;
+            fileValidator = new FileValidator();
+            stringConverter = new StringConverter();
+            employeeGenerator = new EmployeeGenerator(stringConverter);
+            lineParser = new LineParser(stringConverter, employeeGenerator);
+            parser = new Parser(fileValidator, lineParser); ;
         }
 
         [TestMethod]

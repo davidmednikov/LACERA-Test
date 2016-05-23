@@ -25,7 +25,7 @@ namespace TestLibrary
 
         /// <summary>
         /// Parses all lines from a file, generates a <see cref="Employee"/> from each line,
-        /// and returns a <see cref="List{T}"/> of all <see cref="Employee"/>.
+        /// and returns a <see cref="List{T}"/> of all <see cref="Employee"/>s.
         /// </summary>
         /// <param name="fileName">Absolute path of file to be parsed.</param>
         /// <exception cref="ArgumentNullException">The <paramref name="fileName"/> is <c>null</c>.</exception>
@@ -34,11 +34,7 @@ namespace TestLibrary
         public List<Employee> Parse(string fileName)
         {
             this.fileValidator.ValidateFile(fileName);
-
-            // Send FileName string to ReadFile method, returns array of strings
             string[] lines = File.ReadAllLines(fileName);
-
-            // Returns parsed data
             return this.lineParser.ParseAll(lines);
         }
     }

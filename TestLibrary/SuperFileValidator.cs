@@ -9,7 +9,7 @@ namespace TestLibrary
     public class SuperFileValidator : IFileValidator
     {
         /// <summary>
-        /// Ensures the file exists on the drive.
+        /// Ensures the file exists on the drive. Throws exception if file name is blank, file does not exist, or is not CSV format.
         /// </summary>
         /// <param name="fileName">The file to validate.</param>
         /// <exception cref="ArgumentNullException">The <paramref name="fileName"/> is <c>null</c>.</exception>

@@ -45,22 +45,23 @@ else
             <tbody>
                 @*   Replace MinValues with blank text for a neater display    *@
                 @*   Cast valid Salary, Birthday, and DateHired to string type, formatted for neat display    *@
-                @foreach (var line in Model.Employees)
+                @foreach (var line in Model.EmployeesDBs)
                 {
+
                     var Sal = String.Empty;
-                    if (line.Salary != Decimal.MinValue)
+                    if (line.Salary != 0)
                     {
                         Sal = line.Salary.ToString("c");
                     }
 
                     var Bday = String.Empty;
-                    if (line.Birthdate != DateTime.MinValue)
+                    if (line.Birthdate != DateTime.Parse("07/04/1776"))
                     {
                         Bday = line.Birthdate.ToString("MM/dd/yyyy");
                     }
 
                     var Hireday = String.Empty;
-                    if (line.DateHired != DateTime.MinValue)
+                    if (line.DateHired != DateTime.Parse("07/04/1776"))
                     {
                         Hireday = line.DateHired.ToString("MM/dd/yyyy");
                     }
@@ -70,7 +71,7 @@ else
                         <td align="right">@Sal</td>
                         <td>@Hireday</td>
                         <td>@line.PrintIfValid</td>
-                        <td>@line.Id</td>
+                        <td>@line.Guid</td>
                     </tr>
                 }
             </tbody>

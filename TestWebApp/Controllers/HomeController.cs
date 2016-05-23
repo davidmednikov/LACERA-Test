@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TestLibrary;
@@ -9,48 +11,48 @@ namespace TestWebApp.Controllers
 {
     public class HomeController : Controller
     {
-
-        // Action Method for Index Page
+        
+        /// <summary>
+        /// Displays index page. Using TempData as a parameter, View shows uploader interface if file 
+        /// has not been uploaded and shows results table if file has been uploaded.
+        /// </summary>
+        /// <param name="TempData["FilePath"]">Contains location of uploaded file on server.</param>
+        /// <returns>View with data in model.</returns>
         public ActionResult Index()
         {
-            
-            // Create new instance of HomeViewModel
             var model = new HomeViewModels();
 
-
-            // TempData["FilePath"] is a TempData string that contains the location of the CSV on the web server.
-            // The string is created when the CSV is uploaded. The following code only runs when TempData["FilePath"] is not null.
-            // If TempData["FilePath"] is null then the program executes the code in the "Else" loop, which displays the form to upload the CSV.
-
+            /// <summary>
+            /// Displays results view if TempData["FilePath"] is not null.
+            /// </summary>
+            /// <param name ="TempData["FilePath"]">Contains path of uploaded file.</param>
             if (TempData["FilePath"] != null)
             {
                 model.Title = "Results";
                 model.Message = "Your results page.";
-
-                // This section of code only runs when the CSV has been uploaded. This particular line changes model.Uploaded to True so that the
-                // Index.cshtml page (which has an If loop with model.Uploaded as the argument) displays the Results once the CSV has been uploaded and parsed.
                 model.Uploaded = true;
 
-                // Try to parse the data, return an exception if there is an error
                 try
                 {
-                    // Initiate parser object from Parser class
+                    // Initialize dependencies
                     StringConverter stringConverter = new TestLibrary.StringConverter();
                     FileValidator fileValidator = new TestLibrary.FileValidator();
                     EmployeeGenerator employeeGenerator = new TestLibrary.EmployeeGenerator(stringConverter);
                     LineParser lineParser = new TestLibrary.LineParser(stringConverter, employeeGenerator);
                     Parser parser = new TestLibrary.Parser(fileValidator, lineParser);
 
-
-                    // Take TempData["FilePath"] from HttpPost method and assign it to String called path, to be used as an argument for Parse method
                     String path = TempData["FilePath"].ToString();
 
-                    // Run Parse method using file path string created above
-                    model.Employees = parser.Parse(path);
+                    using (var db = new EmployeeModelContainer())
+                    {
+                        ClearTable(db);
+                        var Employees = parser.Parse(path);
+                        PopulateTable(db, Employees);
+                        model.EmployeesDBs = db.EmployeesDBs.ToList();
+                    }
 
                     return View(model);
                 }
-                // If parsing causes an error, return model with Exception message
                 catch (Exception ex)
                 {
                     model.Message = "An errror was encountered while parsing.";
@@ -60,7 +62,9 @@ namespace TestWebApp.Controllers
              
             }
 
-            // The following code only runs when TempData["FilePath"] is null, which happens if a file has not been uploaded yet.
+            /// <summary>
+            /// Displays upload view if TempData["FilePath"] is null, meaning file has not yet been uploaded.
+            /// </summary>
             else
             {
                 model.Title = "Upload";
@@ -70,7 +74,10 @@ namespace TestWebApp.Controllers
             
         }
 
-        // Action method for About page
+        /// <summary>
+        /// Displays <see cref="About"/>View.
+        /// </summary>
+        /// <returns><see cref="About"/>View with model.</returns>
         public ActionResult About()
         {
             var model = new HomeViewModels();
@@ -80,7 +87,10 @@ namespace TestWebApp.Controllers
             return View(model);
         }
 
-        // Action method for Contact page
+        /// <summary>
+        /// Displays <see cref="Contact"/>View.
+        /// </summary>
+        /// <returns><see cref="Contact"/>View with model.</returns>
         public ActionResult Contact()
         {
             var model = new HomeViewModels();
@@ -90,34 +100,69 @@ namespace TestWebApp.Controllers
             return View(model);
         }
 
-        // HttpPost Method for Index page. This code only runs after the form asking for file upload is submitted.
-        // Uploaded file takes the form of argument CSV.
+        /// <summary>
+        /// After file is uploaded, saves file to server and saves file path in <see cref="TempData["FilePath"]"/>
+        /// so that <see cref="Index"/> view can display results table.
+        /// </summary>
+        /// <param name="CSV">Uploaded CSV, provided by post method from form submission.</param>
+        /// <returns>Redirets to <see cref="Index"/>View, this time displaying results because <see cref="TempDataDictionary["FilePath"]"/>is not null.</returns>
         [HttpPost]
         public ActionResult Index(HttpPostedFileBase CSV)
         {
-            // Execute the following code if CSV is not null and ContentLength is greater than 0
-            // This action method should only run after an actual CSV has been uploaded, so the two parameters should be met
             if (CSV != null && CSV.ContentLength > 0)
             {
-                // Create string FileName from name of CSV file
                 var FileName = Path.GetFileName(CSV.FileName);
-
-                // Saves CSV to WebApp server at ~/Content/FileName/
                 CSV.SaveAs(Server.MapPath("~/Content/") + CSV.FileName);
-
-                // Create string path from CSV's location on WebServer so that Parse method knows where to look
                 string path = Path.Combine(Server.MapPath("~/Content/"), FileName);
-
-                // Saves path string to TempData so that a different request can access it
-                // Also allows If loop in Index action to determine whether or not TempData["FilePath"] is null
                 TempData["FilePath"] = path;
 
-                // Redirect back to Index action, this time with data in TempData["FilePath"] so that the If loop executes
                 return RedirectToAction("Index", "Home");
-
             }
-
             return View();
         }
+
+        /// <summary>
+        /// Clears table in database so new data can be added.
+        /// </summary>
+        /// <param name="dataBase">Table to be cleared.</param>
+        public void ClearTable(EmployeeModelContainer dataBase)
+        {
+            var ToBeDeleted =
+                                from rows in dataBase.EmployeesDBs
+                                where rows.EmpID <= 1000000
+                                select rows;
+
+            foreach (var rows in ToBeDeleted)
+            {
+                dataBase.EmployeesDBs.Remove(rows);
+            }
+
+            dataBase.SaveChanges();
+        }
+
+        /// <summary>
+        /// Populates table in database with parsed data.
+        /// </summary>
+        /// <param name="dataBase">Database to be filled</param>
+        /// <param name="employees">List of instances of <see cref="Employee"/>class containing employee data that has been parsed.</param>
+        public void PopulateTable(EmployeeModelContainer dataBase, List<Employee> employees)
+        {
+            foreach (Employee emp in employees)
+            {
+                if (emp.Salary == Decimal.MinValue)
+                { emp.Salary = 0; }
+
+                if (emp.Birthdate == DateTime.MinValue)
+                { emp.Birthdate = DateTime.Parse("07/04/1776"); }
+
+                if (emp.DateHired == DateTime.MinValue)
+                { emp.DateHired = DateTime.Parse("07/04/1776"); }
+
+                var DBEmp = new EmployeesDB { FullName = emp.FullName, Birthdate = emp.Birthdate, Salary = emp.Salary, DateHired = emp.DateHired, Guid = emp.Id, IsValid = emp.IsValid, PrintIfValid = emp.PrintIfValid };
+                dataBase.EmployeesDBs.Add(DBEmp);
+                dataBase.SaveChanges();
+            }
+        }
+
     }
 }
